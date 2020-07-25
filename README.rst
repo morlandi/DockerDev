@@ -133,3 +133,4 @@ Links
 
     *This post from NGINX provides a walkthrough on using the Docker Image to deploy the open-source version of NGINX.*
 
+- `Tricks for Postgres and Docker that will make your life easier <https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082>`_
