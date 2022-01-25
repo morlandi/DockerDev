@@ -110,24 +110,24 @@ from the host:
 
     *Docker introduction, 5 mins read*
 
-- `Docker on macOS: Getting Started <https://www.raywenderlich.com/9159-docker-on-macos-getting-started>`_
+- [Docker on macOS: Getting Started](https://www.raywenderlich.com/9159-docker-on-macos-getting-started)
 
     *In this Docker tutorial, you’ll learn Docker vocabulary and the commands for creating, inspecting and removing containers, networks and data volumes. You’ll learn how to run Docker containers in the background or foreground, and switch between the two; how to publish ports; how to connect a database app and a web app running in separate containers; and how to share directories between containers and your Mac and among containers.*
 
-- `How To Run Your Entire Development Environment in Docker Containers on macOS <https://medium.com/better-programming/php-how-to-run-your-entire-development-environment-in-docker-containers-on-macos-787784e94f9a>`_
+- [How To Run Your Entire Development Environment in Docker Containers on macOS](https://medium.com/better-programming/php-how-to-run-your-entire-development-environment-in-docker-containers-on-macos-787784e94f9a)
 
     *A step-by-step guide to creating a PHP 7.2 localhost, MySQL 8 server, and Redis server development environments using Docker containers*
 
-- `How does Docker run a Linux kernel under macOS host? <https://stackoverflow.com/questions/43383276/how-does-docker-run-a-linux-kernel-under-macos-host>`_
+- [How does Docker run a Linux kernel under macOS host?](https://stackoverflow.com/questions/43383276/how-does-docker-run-a-linux-kernel-under-macos-host)
 
     *from StackOverflow*
 
-- `Can I use docker for installing ubuntu on a Mac? <https://stackoverflow.com/questions/40112083/can-i-use-docker-for-installing-ubuntu-on-a-mac#40112859>`_
+- [Can I use docker for installing ubuntu on a Mac?](https://stackoverflow.com/questions/40112083/can-i-use-docker-for-installing-ubuntu-on-a-mac#40112859)
 
     *from StackOverflow*
 
-- `Tips for Deploying NGINX (Official Image) with Docker <https://www.docker.com/blog/tips-for-deploying-nginx-official-image-with-docker/>`_
+- [Tips for Deploying NGINX (Official Image) with Docker](https://www.docker.com/blog/tips-for-deploying-nginx-official-image-with-docker.)
 
     *This post from NGINX provides a walkthrough on using the Docker Image to deploy the open-source version of NGINX.*
 
-- `Tricks for Postgres and Docker that will make your life easier <https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082>`_
+- [Tricks for Postgres and Docker that will make your life easier](https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082)
