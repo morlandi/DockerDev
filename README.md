@@ -1,5 +1,4 @@
-DockerDev
-=========
+# DockerDev
 
 A few scripts to quickly setup a local environment for web development based on Docker.
 
@@ -7,32 +6,29 @@ Plus, some miscellaneous notes and links - since I'm not familiar with Docker, y
 
 
 
-Cheat sheet
------------
+## Cheat sheet
 
-======================================================= ====================================================================================
-docker container ls -a                                  List all containers
-docker container ls -a -q                               List all containers in "quiet" mode
-docker rm $(docker container ls -a -q)                  Remove all containsers
-docker image ls -a                                      List images
-docker rmi <image name>                                 Remove image
-docker exec -it <container name> /bin/bash              Get a bash shell in the container
-docker exec -it <container name> '<command>'            Execute whatever command you specify in the container.
-======================================================= ====================================================================================
-
+| Command | Purpose |
+|---|---|
+| docker container ls -a                                | List all containers |
+| docker container ls -a -q                             | List all containers in "quiet" mode |
+| docker rm $(docker container ls -a -q)                | Remove all containsers |
+| docker image ls -a                                    | List images |
+| docker rmi <image name>                               | Remove image |
+| docker exec -it <container name> /bin/bash            | Get a bash shell in the container |
+| docker exec -it <container name> '<command>'          | Execute whatever command you specify in the container. |
 
 
-Running an istantaneous Ubuntu Machine
---------------------------------------
+## Running an istantaneous Ubuntu Machine
 
 We will run a Ubuntu machine working with an interactive docker container.
 
 This is the very ground level knowledge on how using Docker as a user environment,
 rather than a standalone container with an app running in it.
 
-.. code:: bash
-
+```bash
     docker run --interactive --tty ubuntu /bin/bash
+```
 
 What we did:
 
@@ -41,9 +37,9 @@ What we did:
 
 or:
 
-.. code:: bash
-
+```bash
     docker run --name ubuntu -v /Users/morlandi/tmp/sources:/src -t -i ubuntu /bin/bash
+```
 
 What we did:
 
@@ -56,36 +52,36 @@ The lifetime of a container is the life time of its single main process.
 
 Time to check docker, see what happened with it:
 
-.. code:: bash
-
+```bash
     docker ps -a
 
     CONTAINER ID        IMAGE               COMMAND             NAMES
     e41423f7856b        ubuntu              "/bin/bash"         ubuntu
     ed5887209364        ubuntu              "/bin/bash"         cool_proskuriakova
+```
 
 Finally, we cleanup the images:
 
-.. code:: bash
-
+```bash
     docker rm -f cool_proskuriakova
     docker rm -f ubuntu
+```
 
-Mac docker volume mount using osxfs
------------------------------------
+## Mac docker volume mount using osxfs
 
 Docker Desktop for Mac started using osxfs for supporting volume mounting on MacOS.
 
 The following command mounts the ~/Desktop directory to the docker container:
 
-.. code:: bash
-
+```bash
     docker run -it -v ~/Desktop:/Desktop ubuntu bash
+```
 
 Proof:
 
-from the container::
+from the container:
 
+```
     root@71f6e65abc6e:/# ls /
     bin  boot  Desktop  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 
@@ -95,21 +91,22 @@ from the container::
         -rw-r--r-- 1 root root 648435 Jul 17 15:47 '/Desktop/Screenshot 2020-07-17 at 17.47.21.png'
         -rw-r--r-- 1 root root 249486 Jul 17 16:15 '/Desktop/Screenshot 2020-07-17 at 18.15.15.png'
         -rw-r--r-- 1 root root 821404 Jul 18 08:57 '/Desktop/Screenshot 2020-07-18 at 10.57.38.png'
+```
 
-from the host::
+from the host:
 
+```
     $ ls -l ~/Desktop
 
         -rw-r--r--@ 1 morlandi  staff  127138 Jul 17 16:52 Desktop/Screenshot 2020-07-17 at 16.51.58.png
         -rw-r--r--@ 1 morlandi  staff  648435 Jul 17 17:47 Desktop/Screenshot 2020-07-17 at 17.47.21.png
         -rw-r--r--@ 1 morlandi  staff  249486 Jul 17 18:15 Desktop/Screenshot 2020-07-17 at 18.15.15.png
         -rw-r--r--@ 1 morlandi  staff  821404 Jul 18 10:57 Desktop/Screenshot 2020-07-18 at 10.57.38.png
+```
 
+## Links
 
-Links
------
-
-- `Docker: have a Ubuntu development machine within seconds, from Windows or Mac <https://medium.com/@hudsonmendes/docker-have-a-ubuntu-development-machine-within-seconds-from-windows-or-mac-fd2f30a338e4>`_
+- [Docker: have a Ubuntu development machine within seconds, from Windows or Mac](https://medium.com/@hudsonmendes/docker-have-a-ubuntu-development-machine-within-seconds-from-windows-or-mac-fd2f30a338e4)
 
     *Docker introduction, 5 mins read*
 
