@@ -131,3 +131,115 @@ from the host:
     *This post from NGINX provides a walkthrough on using the Docker Image to deploy the open-source version of NGINX.*
 
 - [Tricks for Postgres and Docker that will make your life easier](https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082)
+
+
+## Exercise with mysql/mysql-server
+
+### References
+
+- https://hub.docker.com/r/mysql/mysql-server : ottima descrizione dell'immagine "mysql/mysql-server"
+
+
+### (1) Creazione di un container da immagine "mysql/mysql-server"
+
+```
+docker run --name=mysql1 mysql/mysql-server
+```
+
+- In questo caso ci siamo limitati ad assegnare un nome al container ("mysql1") e **abbiamo evitato il flag -d** che provoca l'esecuzione del container in background
+- In questo modo, vediamo tranquillamente i messaggi del container durante il processo di bootstrap, che sono abbastanza istruttruttivi:
+
+```
+❯ docker run --name=mysql1 mysql/mysql-server
+[Entrypoint] MySQL Docker Image 8.0.27-1.2.6-server
+[Entrypoint] No password option specified for new database.
+[Entrypoint]   A random onetime password will be generated.
+[Entrypoint] Initializing database
+...
+[Entrypoint] GENERATED ROOT PASSWORD: Wry1GTT28?v8ujwX_9+3.J0g2:AY:B,;
+...
+[Entrypoint] MySQL init process done. Ready for start up.
+...
+```
+
+
+In particolare, notare la riga **GENERATED ROOT PASSWORD: Wry1GTT28?v8ujwX_9+3.J0g2:AY:B,;** che come spiegato dalla descrizione dell'immagine e' una password random generata per l'utente root.
+
+### (2) Connessione da mysql client e sostituzione password
+
+Avendo assegnato al container un nome noto, possiamo collegarci da un terminale con il client **mysql** inserendo la password di cui sopra:
+
+```
+$ docker exec -it mysql1 mysql -uroot -p
+```
+
+e magari sfruttare la connessione per impostare una nuova password per root:
+
+```
+> alter user root@localhost identified by 'password';
+```
+
+### (3) Distruzione del container
+
+Verifica dei containers is esecuzione:
+
+```
+$ docker ps -a
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS                    PORTS                       NAMES
+2d988632ff2b   mysql/mysql-server   "/entrypoint.sh mysq…"   10 minutes ago   Up 10 minutes (healthy)   3306/tcp, 33060-33061/tcp   mysql1
+```
+
+*rm* non funziona:
+
+```
+$ docker rm mysql1
+Error response from daemon: You cannot remove a running container 2d988632ff2b1fec008261838c7330733a7af98387778f48b6dbb7cd5f532e96. Stop the container before attempting removal or force remove
+```
+
+Bisogna prima stoppare il container oppure usare il flag -force:
+
+```
+$ docker stop mysql1
+$ docker rm mysql1
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+Poiche' i docker containers sono stateless, ricostruendoli si perdono tutti i dati precedentemente memorizzati (a meno di non attaccarli a un Volume)
+
+### (4) Nuova esecuzione (questa volta in background)
+
+Basta aggiungere l'opzione **-d**:
+
+```
+$ docker run -d --name=mysql1 mysql/mysql-server
+b4f683a1d7f7655ebbc2c505f0d307d8558d362db47b18c6d00ac1112b8f7517
+```
+
+Possiamo comunque sbirciare i messaggi prodotti durante l'avvio del container come segue:
+
+```
+$ docker logs mysql1
+...
+[Entrypoint] GENERATED ROOT PASSWORD: 3F9h#V.2.PW6_e:6+kd3aP?A5YK2^Jdg
+...
+```
+
+### (5) Soluzione definitiva
+
+Per convenienza pubblichiamo la porta 3306 per poter accedere in localhost dall'host; se  la porta fosse gia' in uso, potremmo usarne un'altra (sull'host; quella del container "mysql1" e' necessariamente 3306 cioe' la porta di default di Mysql)
+
+```
+docker run -d --name=mysql1 --env MYSQL_ROOT_PASSWORD=password --env MYSQL_ROOT_HOST=% --publish 0.0.0.0:3306:3306 mysql/mysql-server
+```
+
+**MYSQL_ROOT_PASSWORD**: This variable specifies a password that is set for the MySQL root account.
+
+**MYSQL_ROOT_HOST**: By default, MySQL creates the 'root'@'localhost' account. This account can only be connected to from inside the container as described in Connecting to MySQL Server from within the Container. To allow root connections from other hosts, set this environment variable. For example, the value 172.17.0.1, which is the default Docker gateway IP, allows connections from the host machine that runs the container. The option accepts only one entry, but wildcards are allowed (for example, MYSQL_ROOT_HOST=172.*.*.* or MYSQL_ROOT_HOST=%).
+
+Inoltre possiamo utilizzare un docker volume per garantire la persistenza in caso di ricostruzione del container; in questo modo i dati creati non verranno persi e potranno essere riutilizzati.
+
+```
+$ docker run -d --name mysql1 --env MYSQL_ROOT_PASSWORD=password --env MYSQL_ROOT_HOST=% --volume ~/DockerDev/tmp/mysql1:/var/lib/mysql --publish 0.0.0.0:3306:3306 mysql/mysql-server
+```
+
