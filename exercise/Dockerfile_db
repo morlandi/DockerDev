@@ -1,0 +1,19 @@
+FROM mysql/mysql-server
+
+#MAINTAINER me
+
+ENV MYSQL_DATABASE=testdb \
+    MYSQL_ROOT_PASSWORD=password
+
+# Vedi: "Import CSV File Into MySQL Table"
+# https://www.mysqltutorial.org/import-csv-file-mysql-table/
+#ADD schema.sql /docker-entrypoint-initdb.d
+
+# https://serverfault.com/questions/796762/creating-a-docker-mysql-container-with-a-prepared-database-scheme
+
+#https://computingforgeeks.com/how-to-solve-mysql-server-is-running-with-the-secure-file-priv-error/
+
+COPY people.csv /docker-entrypoint-initdb.d/
+COPY schema.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 3306
