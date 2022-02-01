@@ -13,7 +13,7 @@ ENV MYSQL_DATABASE=testdb \
 
 #https://computingforgeeks.com/how-to-solve-mysql-server-is-running-with-the-secure-file-priv-error/
 
-COPY people.csv /docker-entrypoint-initdb.d/
+COPY people.csv /var/lib/mysql-files/
 COPY schema.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306
