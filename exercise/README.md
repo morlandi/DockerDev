@@ -74,3 +74,14 @@ and:
 ```
 docker exec -ti api1 /bin/sh
 ```
+
+### Using volumes
+
+https://rominirani.com/docker-tutorial-series-part-7-data-volumes-93073a1b5b72
+
+Example:
+
+$ docker run -it --name container1 -v /Users/morlandi/dockervol:/datavol busybox
+/ #
+
+
